@@ -13,3 +13,13 @@ variable "public_subnets" {
     az   = string
   }))
 }
+
+variable "ami_id" {
+  type    = string
+  default = "ami-0bde73fd629657a59"
+}
+
+variable "instance_type" {
+  type    = string
+  default = "t3.micro"
+}
