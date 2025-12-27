@@ -1,6 +1,6 @@
 resource "aws_key_pair" "this" {
   key_name   = "projeto3-key"
-  public_key = file("${path.module}/../../../projeto3-key.pub")
+  public_key = file("${path.root}/../../projeto3-key.pub")
 }
 
 resource "aws_instance" "web" {
