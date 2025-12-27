@@ -7,154 +7,115 @@
 ![Prometheus](https://img.shields.io/badge/prometheus-%23E6522C.svg?style=for-the-badge&logo=prometheus&logoColor=white)
 ![Grafana](https://img.shields.io/badge/grafana-%23F46800.svg?style=for-the-badge&logo=grafana&logoColor=white)
 
-# 🧪 Cloud Native DevOps Lab
+# 🧪 Cloud Native DevOps Lab — Project3
 
-Laboratório Cloud Native de DevOps na AWS utilizando Kubernetes, GitHub Actions, Ansible, Prometheus e Grafana, com arquitetura de baixo custo.
+Laboratório Cloud Native de DevOps na AWS, focado em **baixo custo**, **automação**, **Kubernetes** e **observabilidade**, utilizando boas práticas de infraestrutura como código, CI/CD e gerenciamento de configuração.
 
 ---
 
 ## 🎯 Objetivo do Projeto
 
-Este projeto tem como objetivo criar um laboratório prático de DevOps e Observabilidade, focado em:
+Criar um laboratório prático para estudo e portfólio profissional, abordando de ponta a ponta:
 
-- Infraestrutura na AWS com baixo custo
-- Execução de workloads containerizados
-- Automação de CI/CD
-- Gerenciamento de configuração com Ansible
-- Implementação de observabilidade
-- Documentação da evolução técnica commit a commit
+- Infraestrutura como Código (Terraform)
+- Provisionamento em AWS com foco em baixo custo
+- Kubernetes em ambiente single-node (k3s)
+- CI/CD com GitHub Actions
+- Automação e configuração com Ansible
+- Observabilidade com Prometheus e Grafana
+- Evolução documentada commit a commit
 
 ---
 
 ## 🧱 Escopo Inicial
 
-### Infraestrutura
+### ☁️ Infraestrutura
 - AWS EC2 (instância única)
+- VPC customizada com subnet pública
 - Ubuntu 22.04 LTS
-- Kubernetes rodando dentro da EC2 (k3s)
+- Arquitetura simplificada para laboratório
 
-### Aplicação
-- Site simples (ex: Nginx, Node.js ou Python)
-- Containerizado com Docker
+### ⚙️ Plataforma
+- Docker
+- Kubernetes (k3s)
+
+### 📦 Aplicação
+- Aplicação simples (ex: Nginx, Node.js ou Python)
+- Containerizada com Docker
 - Deploy via Kubernetes
 
-### CI/CD
-- GitHub Actions para:
-  - Build da imagem Docker
-  - Push para registry
-  - Deploy automático no Kubernetes
+### 🔄 CI/CD
+- GitHub Actions para build, push e deploy
 
-### Automação
-- Ansible para:
-  - Configuração da EC2
-  - Instalação de dependências
-  - Padronização do ambiente
+### 🛠️ Automação
+- Ansible para configuração da EC2 e do cluster
 
-### Observabilidade
+### 📊 Observabilidade
 - Prometheus
 - Grafana
-- Métricas da aplicação e do cluster
-- Dashboards básicos
-- Alertas simples
 
 ---
 
-## 🗺️ Arquitetura (Visão Geral)
+## 🗺️ Arquitetura — Visão Geral
 
-```
-GitHub
-└── GitHub Actions (CI)
-    ├── Build da imagem Docker
-    ├── Push para Registry
-    └── Deploy no Kubernetes
+GitHub  
+└── GitHub Actions (CI)  
+&nbsp;&nbsp;&nbsp;&nbsp;├── Build da imagem Docker  
+&nbsp;&nbsp;&nbsp;&nbsp;├── Push para Registry  
+&nbsp;&nbsp;&nbsp;&nbsp;└── Deploy no Kubernetes  
 
-AWS
-└── EC2
-    ├── Docker
-    ├── Kubernetes (k3s)
-    │   ├── Aplicação
-    │   ├── Prometheus
-    │   └── Grafana
-    └── Ansible
-```
+AWS  
+└── EC2  
+&nbsp;&nbsp;&nbsp;&nbsp;├── Docker  
+&nbsp;&nbsp;&nbsp;&nbsp;├── Kubernetes (k3s)  
+&nbsp;&nbsp;&nbsp;&nbsp;│   ├── Aplicação  
+&nbsp;&nbsp;&nbsp;&nbsp;│   ├── Prometheus  
+&nbsp;&nbsp;&nbsp;&nbsp;│   └── Grafana  
+&nbsp;&nbsp;&nbsp;&nbsp;└── Ansible  
 
 ---
 
 ## 📌 Roadmap do Projeto
 
 ### Fase 1 — Infraestrutura Base
-- [ ] Criar EC2 na AWS
-- [ ] Configurar acesso SSH
-- [ ] Hardening básico (firewall, usuários)
+- [x] Estrutura inicial do projeto
+- [x] Terraform modularizado
+- [ ] Provisionar EC2
+- [ ] Testar acesso SSH e HTTP
 
 ### Fase 2 — Container e Kubernetes
 - [ ] Instalar Docker
 - [ ] Instalar Kubernetes (k3s)
-- [ ] Validar cluster com kubectl
+- [ ] Validar cluster
 
 ### Fase 3 — Aplicação
-- [ ] Criar site simples
+- [ ] Criar aplicação simples
 - [ ] Criar Dockerfile
-- [ ] Criar manifests Kubernetes
-- [ ] Deploy da aplicação
+- [ ] Deploy no Kubernetes
 
 ### Fase 4 — CI/CD
 - [ ] Criar pipeline no GitHub Actions
-- [ ] Build da imagem Docker
-- [ ] Push para registry
+- [ ] Build e push da imagem
 - [ ] Deploy automático
 
-### Fase 5 — Ansible
-- [ ] Criar inventário
-- [ ] Criar playbooks
-- [ ] Automatizar setup da EC2
-
-### Fase 6 — Observabilidade
-- [ ] Instalar Helm
+### Fase 5 — Observabilidade
 - [ ] Deploy Prometheus
 - [ ] Deploy Grafana
-- [ ] Criar dashboards
-- [ ] Configurar alertas
-
----
-
-## 📝 Controle de Progresso por Commit
-
-### 📦 Commit 1 — Escopo Inicial
-**O que foi feito:**
-- Criação do repositório
-- Definição do escopo do laboratório
-- Criação do README inicial
-
-**O que falta:**
-- Implementação da infraestrutura
-- Deploy da aplicação
-- Automação e observabilidade
-
-### 📦 Commit 2 — Estrutura Inicial do Projeto
-**O que foi feito:**
-- Criação da estrutura base de diretórios
-- Organização inicial para Terraform, Ansible, Kubernetes e CI
-
-**O que falta:**
-- Implementação da infraestrutura
-- Provisionamento da EC2
-- Automação com Ansible
+- [ ] Dashboards e alertas
 
 ---
 
 ## 💰 Controle de Custos
 
-- Utilização de apenas uma EC2
-- Evitar serviços gerenciados de alto custo (EKS, RDS, ALB)
-- Desligar a instância quando não estiver em uso
-- Monitorar billing da AWS
+- Apenas uma EC2
+- Sem serviços gerenciados caros
+- Ideal para desligar quando não estiver em uso
 
 ---
 
 ## 📚 Tecnologias Utilizadas
 
-- AWS EC2
+- AWS
 - Terraform
 - Docker
 - Kubernetes (k3s)
@@ -162,20 +123,9 @@ AWS
 - Ansible
 - Prometheus
 - Grafana
-- Helm
 
 ---
 
-## 🚀 Próximos Passos
+## 📎 Observações Finais
 
-- Criar a infraestrutura base na AWS
-- Evoluir o README a cada fase
-- Adicionar diagramas
-- Criar dashboards customizados
-- Simular falhas e alertas
-
----
-
-## 📎 Observações
-
-Este laboratório não tem foco em alta disponibilidade, mas sim em aprendizado prático, integração entre ferramentas e baixo custo, sendo ideal para estudo e portfólio profissional.
+Projeto focado em aprendizado prático, integração entre ferramentas e construção de portfólio profissional.
