@@ -131,6 +131,16 @@ AWS
 - Deploy da aplicação
 - Automação e observabilidade
 
+### 📦 Commit 2 — Estrutura Inicial do Projeto
+**O que foi feito:**
+- Criação da estrutura base de diretórios
+- Organização inicial para Terraform, Ansible, Kubernetes e CI
+
+**O que falta:**
+- Implementação da infraestrutura
+- Provisionamento da EC2
+- Automação com Ansible
+
 ---
 
 ## 💰 Controle de Custos
