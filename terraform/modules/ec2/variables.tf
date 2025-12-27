@@ -17,3 +17,13 @@ variable "instance_type" {
   type        = string
   description = "Tipo da instância (ex: t3.micro)"
 }
+
+variable "public_key" {
+  description = "Conteúdo da chave pública SSH"
+  type        = string
+}
+
+variable "key_name" {
+  type        = string
+  description = "Nome da chave SSH na AWS"
+}

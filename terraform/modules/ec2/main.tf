@@ -1,6 +1,6 @@
 resource "aws_key_pair" "this" {
-  key_name   = "projeto3-key"
-  public_key = file("${path.root}/../../projeto3-key.pub")
+  key_name   = var.key_name
+  public_key = var.public_key  
 }
 
 resource "aws_instance" "web" {
@@ -12,8 +12,6 @@ resource "aws_instance" "web" {
   key_name               = aws_key_pair.this.key_name
 
   associate_public_ip_address = true
-
-  # Removido user_data para que o Ansible gerencie o provisionamento de software
 
   tags = {
     Name = "web-server-project3"
