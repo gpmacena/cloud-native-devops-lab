@@ -1,0 +1,64 @@
+name: "CI/CD - Deploy & Manual Destroy"
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: "sa-east-1"
+
+jobs:
+  deploy:
+    name: "Provision and Configure"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init & Apply
+        run: |
+          cd terraform/envs
+          terraform init
+          terraform apply -auto-approve
+
+      - name: Install Python Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install boto3 botocore
+
+      - name: Setup SSH Key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > projeto3-key
+          chmod 400 projeto3-key
+
+      - name: Run Ansible Playbooks
+        run: |
+          cd ansible
+          sleep 40 
+          ansible-playbook site.yml
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: "False"
+
+  destroy:
+    name: "Manual Destroy"
+    needs: deploy
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Destroy
+        run: |
+          cd terraform/envs
+          terraform init
+          terraform destroy -auto-approve
