@@ -2,3 +2,4 @@
 - import_playbook: playbooks/base.yml
 - import_playbook: playbooks/docker.yml
 - import_playbook: playbooks/k3s.yml
+- import_playbook: playbooks/app.yml

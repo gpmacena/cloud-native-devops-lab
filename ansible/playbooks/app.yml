@@ -1,0 +1,19 @@
+- name: Deploy da Aplicacao
+  hosts: all
+  become: yes
+  tasks:
+    - name: Criar diretorio de manifestos
+      file:
+        path: /home/ubuntu/manifests
+        state: directory
+        owner: ubuntu
+
+    - name: Renderizar template do Kubernetes
+      template:
+        src: ../templates/k8s-app.yaml.j2
+        dest: /home/ubuntu/manifests/k8s-app.yaml
+
+    - name: Aplicar manifesto no K3s
+      shell: kubectl apply -f /home/ubuntu/manifests/k8s-app.yaml
+      environment:
+        KUBECONFIG: /etc/rancher/k3s/k3s.yaml

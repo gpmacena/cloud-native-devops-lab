@@ -4,7 +4,7 @@ resource "aws_security_group" "web_sg" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description = "SSH de qualquer lugar"
+    description = "SSH"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -12,7 +12,7 @@ resource "aws_security_group" "web_sg" {
   }
 
   ingress {
-    description = "HTTP de qualquer lugar"
+    description = "HTTP"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -23,6 +23,14 @@ resource "aws_security_group" "web_sg" {
     description = "K3s API Server"
     from_port   = 6443
     to_port     = 6443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "NodePort App Test"
+    from_port   = 30080
+    to_port     = 30080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

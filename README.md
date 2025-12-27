@@ -65,7 +65,7 @@ O projeto implementa uma pipeline profissional automatizada com foco em **govern
 - [x] **Pipeline de CI/CD com fluxos de Deploy e Destroy (Aprovação Manual).**
 
 ### Fase 3 — Aplicação e CI/CD ⏳
-- [ ] Dockerização da aplicação.
+- [x] Dockerização da aplicação.
 - [ ] Deploy automático via Manifests Kubernetes.
 - [ ] Configuração de Ingress e acesso externo.
 
