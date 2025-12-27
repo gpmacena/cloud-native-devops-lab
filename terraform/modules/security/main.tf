@@ -1,9 +1,10 @@
 resource "aws_security_group" "web_sg" {
-  name        = "web-server-sg"
-  description = "Permitir SSH e HTTP"
+  name        = "web-server-sg-project3"
+  description = "Regras de acesso para Web Server e Kubernetes k3s"
   vpc_id      = var.vpc_id
 
   ingress {
+    description = "SSH de qualquer lugar"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -11,8 +12,17 @@ resource "aws_security_group" "web_sg" {
   }
 
   ingress {
+    description = "HTTP de qualquer lugar"
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "K3s API Server"
+    from_port   = 6443
+    to_port     = 6443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -25,6 +35,6 @@ resource "aws_security_group" "web_sg" {
   }
 
   tags = {
-    Name = "web-sg-projeto1"
+    Name = "web-sg-project3"
   }
 }

@@ -1,20 +1,21 @@
+resource "aws_key_pair" "this" {
+  key_name   = "projeto3-key"
+  public_key = file("${path.module}/../../../projeto3-key.pub")
+}
+
 resource "aws_instance" "web" {
-  ami           = "ami-0bde73fd629657a59"
-  instance_type = "t3.micro"
+  ami           = var.ami_id
+  instance_type = var.instance_type
 
   subnet_id              = var.subnet_id
   vpc_security_group_ids = [var.security_group_id]
+  key_name               = aws_key_pair.this.key_name
+
   associate_public_ip_address = true
 
-  user_data = <<-EOF
-              #!/bin/bash
-              apt-get update
-              apt-get install -y nginx
-              systemctl start nginx
-              systemctl enable nginx
-              EOF
+  # Removido user_data para que o Ansible gerencie o provisionamento de software
 
   tags = {
-    Name = "web-server-projeto1"
+    Name = "web-server-project3"
   }
 }

@@ -18,7 +18,7 @@ Laboratório Cloud Native de DevOps na AWS, focado em **baixo custo**, **automa�
 Criar um laboratório prático para estudo e portfólio profissional, abordando de ponta a ponta:
 
 - Infraestrutura como Código (Terraform)
-- Provisionamento em AWS com foco em baixo custo
+- Provisionamento em AWS com foco em baixo custo (Arquitetura Single-Tier)
 - Kubernetes em ambiente single-node (k3s)
 - CI/CD com GitHub Actions
 - Automação e configuração com Ansible
@@ -27,105 +27,62 @@ Criar um laboratório prático para estudo e portfólio profissional, abordando 
 
 ---
 
-## 🧱 Escopo Inicial
+## 🏗️ Arquitetura de Infraestrutura (IaC)
 
-### ☁️ Infraestrutura
-- AWS EC2 (instância única)
-- VPC customizada com subnet pública
-- Ubuntu 22.04 LTS
-- Arquitetura simplificada para laboratório
+A infraestrutura é gerenciada via **Terraform** com uma estrutura modular e estado remoto:
 
-### ⚙️ Plataforma
-- Docker
-- Kubernetes (k3s)
-
-### 📦 Aplicação
-- Aplicação simples (ex: Nginx, Node.js ou Python)
-- Containerizada com Docker
-- Deploy via Kubernetes
-
-### 🔄 CI/CD
-- GitHub Actions para build, push e deploy
-
-### 🛠️ Automação
-- Ansible para configuração da EC2 e do cluster
-
-### 📊 Observabilidade
-- Prometheus
-- Grafana
-
----
-
-## 🗺️ Arquitetura — Visão Geral
-
-GitHub  
-└── GitHub Actions (CI)  
-&nbsp;&nbsp;&nbsp;&nbsp;├── Build da imagem Docker  
-&nbsp;&nbsp;&nbsp;&nbsp;├── Push para Registry  
-&nbsp;&nbsp;&nbsp;&nbsp;└── Deploy no Kubernetes  
-
-AWS  
-└── EC2  
-&nbsp;&nbsp;&nbsp;&nbsp;├── Docker  
-&nbsp;&nbsp;&nbsp;&nbsp;├── Kubernetes (k3s)  
-&nbsp;&nbsp;&nbsp;&nbsp;│   ├── Aplicação  
-&nbsp;&nbsp;&nbsp;&nbsp;│   ├── Prometheus  
-&nbsp;&nbsp;&nbsp;&nbsp;│   └── Grafana  
-&nbsp;&nbsp;&nbsp;&nbsp;└── Ansible  
+- **State Management:** Backend configurado em S3 (`sa-east-1`) com suporte a múltiplos projetos.
+- **VPC:** Rede customizada com foco em custo zero (sem NAT Gateway), utilizando apenas subnets públicas.
+- **Security:** Security Groups granulares para acesso administrativo (SSH) e público (HTTP).
+- **Compute:** EC2 t3.micro provisionada com script de inicialização (User Data) para Bootstrap do Nginx.
 
 ---
 
 ## 📌 Roadmap do Projeto
 
 ### Fase 1 — Infraestrutura Base
-- [x] Estrutura inicial do projeto
-- [x] Terraform modularizado
-- [ ] Provisionar EC2
+- [x] Estrutura inicial do projeto (Monorepo)
+- [x] Terraform modularizado (VPC, Security, EC2)
+- [x] Configuração de Backend Remoto (S3)
+- [x] Validação e Planejamento da Infraestrutura (`terraform plan`)
+- [ ] Criar Key Pair e provisionar EC2 via `terraform apply`
 - [ ] Testar acesso SSH e HTTP
 
 ### Fase 2 — Container e Kubernetes
-- [ ] Instalar Docker
-- [ ] Instalar Kubernetes (k3s)
-- [ ] Validar cluster
+- [ ] Provisionamento via Ansible (Roles: Docker, k3s)
+- [ ] Configuração do Cluster Kubernetes (k3s)
+- [ ] Hardening básico do servidor
 
 ### Fase 3 — Aplicação
-- [ ] Criar aplicação simples
-- [ ] Criar Dockerfile
-- [ ] Deploy no Kubernetes
+- [ ] Criar aplicação e Dockerfile
+- [ ] Configurar manifests de Kubernetes (Deployments/Services)
+- [ ] Deploy da aplicação no cluster
 
 ### Fase 4 — CI/CD
 - [ ] Criar pipeline no GitHub Actions
-- [ ] Build e push da imagem
-- [ ] Deploy automático
+- [ ] Build e push da imagem para Registry
+- [ ] Continuous Deployment automático
 
 ### Fase 5 — Observabilidade
-- [ ] Deploy Prometheus
-- [ ] Deploy Grafana
-- [ ] Dashboards e alertas
+- [ ] Deploy da stack de monitoramento (Prometheus/Grafana)
+- [ ] Dashboards de métricas de infraestrutura e aplicação
 
 ---
 
 ## 💰 Controle de Custos
 
-- Apenas uma EC2
-- Sem serviços gerenciados caros
-- Ideal para desligar quando não estiver em uso
-
----
-
-## 📚 Tecnologias Utilizadas
-
-- AWS
-- Terraform
-- Docker
-- Kubernetes (k3s)
-- GitHub Actions
-- Ansible
-- Prometheus
-- Grafana
+- **Estratégia:** Uso exclusivo de Free Tier ou instâncias de baixo custo (t3.micro).
+- **Rede:** Subnets públicas apenas, evitando custos fixos de NAT Gateways.
+- **Monitoramento:** Ferramentas Open Source instaladas internamente para evitar custos de serviços gerenciados (CloudWatch/EKS).
 
 ---
 
 ## 📎 Observações Finais
 
-Projeto focado em aprendizado prático, integração entre ferramentas e construção de portfólio profissional.
+O projeto utiliza a regra de ouro de caminhos relativos para módulos e separação clara entre código de infraestrutura (`modules`) e definições de ambiente (`envs`).
+
+```bash
+# Para replicar o ambiente:
+cd terraform/envs
+terraform init
+terraform plan
