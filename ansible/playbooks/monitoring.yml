@@ -6,11 +6,15 @@
     - name: Garantir que o namespace de monitoramento existe
       shell: kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
 
-    - name: Adicionar repositório Helm do Prometheus (opcional, mas vamos usar manifestos para ser mais rápido)
+    - name: Pequena pausa para estabilização
+      pause:
+        seconds: 10
+
+    - name: Aplicar Operador do Prometheus
       shell: |
         kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/bundle.yaml
       
-    - name: Deploy do Prometheus e Grafana (Versão Lite)
+    - name: Deploy Grafana Lite
       shell: |
         kubectl apply -f https://raw.githubusercontent.com/bibinwilson/kubernetes-grafana/master/grafana-datasource-config.yaml
         kubectl apply -f https://raw.githubusercontent.com/bibinwilson/kubernetes-grafana/master/deployment.yaml
