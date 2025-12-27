@@ -1,0 +1,36 @@
+---
+- name: "Hardening e Base do Sistema"
+  hosts: web_server_project3
+  become: yes
+  tasks:
+    - name: Atualizar todos os pacotes (apt upgrade)
+      apt:
+        upgrade: dist
+        update_cache: yes
+
+    - name: Configurar fuso horário para America/Sao_Paulo
+      timezone:
+        name: America/Sao_Paulo
+
+    - name: Configurar o UFW (Firewall) - Permitir SSH
+      ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+
+    - name: Configurar o UFW - Permitir HTTP
+      ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+
+    - name: Configurar o UFW - Permitir K3s API
+      ufw:
+        rule: allow
+        port: '6443'
+        proto: tcp
+
+    - name: Ativar o UFW
+      ufw:
+        state: enabled
+        policy: deny

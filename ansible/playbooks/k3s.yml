@@ -1,0 +1,21 @@
+---
+- name: "Instalação do K3s"
+  hosts: web_server_project3
+  become: yes
+  tasks:
+    - name: Baixar e executar script de instalação do K3s
+      shell: curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable traefik" sh -
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: Esperar pelo nó ficar pronto
+      shell: k3s kubectl get nodes
+      register: nodes_output
+      until: '"Ready" in nodes_output.stdout'
+      retries: 10
+      delay: 5
+
+    - name: Ajustar permissão do k3s.yaml para o usuário ubuntu
+      file:
+        path: /etc/rancher/k3s/k3s.yaml
+        mode: '0644'

@@ -50,8 +50,8 @@ A infraestrutura é gerenciada via **Terraform** com uma estrutura modular e est
 ### Fase 2 — Automação e Kubernetes 
 - [x] Configuração de Inventário Dinâmico (Ansible + AWS Plugin).
 - [x] Validação de conectividade Ansible (Ping/Pong).
-- [ ] Implementação de Playbooks (Docker, k3s).
-- [ ] Hardening básico do servidor.
+- [x] Implementação de Playbooks (Docker, k3s).
+- [x] Hardening básico do servidor.
 
 ### Fase 3 — Aplicação e CI/CD ⏳
 - [ ] Criar pipeline no GitHub Actions (Terraform + Ansible).
