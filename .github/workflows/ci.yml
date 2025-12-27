@@ -26,11 +26,12 @@ jobs:
           terraform init
           terraform apply -auto-approve
 
-      - name: Install Python Dependencies
+      - name: Install Ansible and Python Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip
-          pip3 install boto3 botocore
+          python3 -m pip install --upgrade pip
+          # Instalamos o ansible junto com as bibliotecas da AWS para garantir compatibilidade
+          pip3 install boto3 botocore ansible
 
       - name: Setup SSH Key
         run: |
@@ -41,9 +42,14 @@ jobs:
         run: |
           cd ansible
           sleep 40 
-          ansible-playbook site.yml
+          # Forçamos o Ansible a usar o interpretador onde o boto3 está instalado
+          ansible-playbook -i inventory/aws_ec2.yml site.yml -e "ansible_python_interpreter=/usr/bin/python3"
         env:
           ANSIBLE_HOST_KEY_CHECKING: "False"
+          # Passamos as credenciais AWS também para o step do Ansible (necessário para o Dynamic Inventory)
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: "sa-east-1"
 
   destroy:
     name: "Manual Destroy"

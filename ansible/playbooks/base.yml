@@ -1,6 +1,6 @@
 ---
 - name: "Hardening e Base do Sistema"
-  hosts: web_server_project3
+  hosts: all
   become: yes
   tasks:
     - name: Atualizar todos os pacotes (apt upgrade)

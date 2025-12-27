@@ -1,6 +1,6 @@
 ---
 - name: "Instalação do Docker"
-  hosts: web_server_project3
+  hosts: all
   become: yes
   tasks:
     - name: Adicionar chave GPG oficial do Docker

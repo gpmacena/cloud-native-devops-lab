@@ -1,6 +1,6 @@
 ---
 - name: "Instalação do K3s"
-  hosts: web_server_project3
+  hosts: all
   become: yes
   tasks:
     - name: Baixar e executar script de instalação do K3s
