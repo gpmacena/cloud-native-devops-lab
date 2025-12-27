@@ -17,13 +17,12 @@ Laboratório Cloud Native de DevOps na AWS, focado em **baixo custo**, **automa�
 
 Criar um laboratório prático para estudo e portfólio profissional, abordando de ponta a ponta:
 
-- Infraestrutura como Código (Terraform)
-- Provisionamento em AWS com foco em baixo custo (Arquitetura Single-Tier)
-- Kubernetes em ambiente single-node (k3s)
-- CI/CD com GitHub Actions
-- Automação e configuração com Ansible
-- Observabilidade com Prometheus e Grafana
-- Evolução documentada commit a commit
+- Infraestrutura como Código (Terraform).
+- Provisionamento em AWS com foco em baixo custo (Arquitetura Single-Tier).
+- Kubernetes em ambiente single-node (k3s).
+- CI/CD com GitHub Actions (GitOps flow).
+- Automação e configuração com Ansible.
+- Observabilidade com Prometheus e Grafana.
 
 ---
 
@@ -31,58 +30,55 @@ Criar um laboratório prático para estudo e portfólio profissional, abordando 
 
 A infraestrutura é gerenciada via **Terraform** com uma estrutura modular e estado remoto:
 
-- **State Management:** Backend configurado em S3 (`sa-east-1`) com suporte a múltiplos projetos.
-- **VPC:** Rede customizada com foco em custo zero (sem NAT Gateway), utilizando apenas subnets públicas.
-- **Security:** Security Groups granulares para acesso administrativo (SSH) e público (HTTP).
-- **Compute:** EC2 t3.micro provisionada com script de inicialização (User Data) para Bootstrap do Nginx.
+- **State Management:** Backend configurado em S3 (`sa-east-1`) para persistência do estado.
+- **VPC:** Rede customizada sem custos fixos (sem NAT Gateway), utilizando subnets públicas e IGW.
+- **Security:** Security Groups granulares: SSH (22), HTTP (80) e K3s API (6443).
+- **Compute:** EC2 t3.micro provisionada via módulos reutilizáveis.
+- **Configuração:** Inventário dinâmico do Ansible utilizando o plugin `aws_ec2` para detecção automática de hosts via Tags.
 
 ---
 
 ## 📌 Roadmap do Projeto
 
-### Fase 1 — Infraestrutura Base
-- [x] Estrutura inicial do projeto (Monorepo)
-- [x] Terraform modularizado (VPC, Security, EC2)
-- [x] Configuração de Backend Remoto (S3)
-- [x] Validação e Planejamento da Infraestrutura (`terraform plan`)
-- [ ] Criar Key Pair e provisionar EC2 via `terraform apply`
-- [ ] Testar acesso SSH e HTTP
+### Fase 1 — Infraestrutura Base 
+- [x] Estrutura inicial do projeto (Monorepo).
+- [x] Terraform modularizado (VPC, Security, EC2).
+- [x] Configuração de Backend Remoto (S3).
+- [x] Provisionamento de Key Pair e EC2 via Terraform.
+- [x] Validação de conectividade via SSH.
 
-### Fase 2 — Container e Kubernetes
-- [ ] Provisionamento via Ansible (Roles: Docker, k3s)
-- [ ] Configuração do Cluster Kubernetes (k3s)
-- [ ] Hardening básico do servidor
+### Fase 2 — Automação e Kubernetes 
+- [x] Configuração de Inventário Dinâmico (Ansible + AWS Plugin).
+- [x] Validação de conectividade Ansible (Ping/Pong).
+- [ ] Implementação de Playbooks (Docker, k3s).
+- [ ] Hardening básico do servidor.
 
-### Fase 3 — Aplicação
-- [ ] Criar aplicação e Dockerfile
-- [ ] Configurar manifests de Kubernetes (Deployments/Services)
-- [ ] Deploy da aplicação no cluster
+### Fase 3 — Aplicação e CI/CD ⏳
+- [ ] Criar pipeline no GitHub Actions (Terraform + Ansible).
+- [ ] Dockerização da aplicação.
+- [ ] Deploy automático via Manifests Kubernetes.
 
-### Fase 4 — CI/CD
-- [ ] Criar pipeline no GitHub Actions
-- [ ] Build e push da imagem para Registry
-- [ ] Continuous Deployment automático
-
-### Fase 5 — Observabilidade
-- [ ] Deploy da stack de monitoramento (Prometheus/Grafana)
-- [ ] Dashboards de métricas de infraestrutura e aplicação
+### Fase 4 — Observabilidade ⏳
+- [ ] Deploy da stack de monitoramento (Prometheus/Grafana).
+- [ ] Dashboards de métricas.
 
 ---
 
-## 💰 Controle de Custos
+## 🛠️ Como Executar (Local)
 
-- **Estratégia:** Uso exclusivo de Free Tier ou instâncias de baixo custo (t3.micro).
-- **Rede:** Subnets públicas apenas, evitando custos fixos de NAT Gateways.
-- **Monitoramento:** Ferramentas Open Source instaladas internamente para evitar custos de serviços gerenciados (CloudWatch/EKS).
+### Pré-requisitos
+- Terraform instalado.
+- Ansible e bibliotecas Python (`boto3`, `botocore`).
 
----
-
-## 📎 Observações Finais
-
-O projeto utiliza a regra de ouro de caminhos relativos para módulos e separação clara entre código de infraestrutura (`modules`) e definições de ambiente (`envs`).
-
+### Passo a Passo
 ```bash
-# Para replicar o ambiente:
+# 1. Provisionar Infra
 cd terraform/envs
 terraform init
-terraform plan
+terraform apply -auto-approve
+
+# 2. Configurar o Ansible
+cd ../../ansible
+# O Ansible usará o arquivo inventory/aws_ec2.yml para achar a máquina
+ansible-inventory --graph
+ansible all -m ping

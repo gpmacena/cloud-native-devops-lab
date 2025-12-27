@@ -17,5 +17,8 @@ resource "aws_instance" "web" {
 
   tags = {
     Name = "web-server-project3"
+    Project = "cloud-native-devops-lab"
+    Env     = "dev"
   }
 }
+
