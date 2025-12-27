@@ -66,8 +66,8 @@ O projeto implementa uma pipeline profissional automatizada com foco em **govern
 
 ### Fase 3 — Aplicação e CI/CD ⏳
 - [x] Dockerização da aplicação.
-- [ ] Deploy automático via Manifests Kubernetes.
-- [ ] Configuração de Ingress e acesso externo.
+- [x] Deploy automático via Manifests Kubernetes.
+- [x] Configuração de Ingress e acesso externo.
 
 ### Fase 4 — Observabilidade ⏳
 - [ ] Deploy da stack de monitoramento (Prometheus/Grafana).
