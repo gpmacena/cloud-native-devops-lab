@@ -46,7 +46,7 @@ jobs:
 
       - name: Terraform Init & Apply
         run: |
-          cd terraform/envs
+          cd terraform/envs/development
           terraform init
           terraform apply -auto-approve
 
@@ -65,7 +65,6 @@ jobs:
         run: |
           cd ansible
           sleep 45
-          # Passamos o DOCKERHUB_USER como variável extra para o Ansible usar no template do K8s
           ansible-playbook -i inventory/aws_ec2.yml site.yml \
             -e "ansible_python_interpreter=/usr/bin/python3" \
             -e "dockerhub_user=${{ secrets.DOCKERHUB_USERNAME }}"
@@ -89,6 +88,6 @@ jobs:
 
       - name: Terraform Destroy
         run: |
-          cd terraform/envs
+          cd terraform/envs/development
           terraform init
           terraform destroy -auto-approve

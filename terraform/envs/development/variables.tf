@@ -21,5 +21,5 @@ variable "ami_id" {
 
 variable "instance_type" {
   type    = string
-  default = "t3.small" # Alterado de t3.micro para t3.small
+  default = "t3.small"
 }
