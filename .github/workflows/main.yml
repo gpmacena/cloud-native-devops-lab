@@ -9,6 +9,8 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_DEFAULT_REGION: "sa-east-1"
   DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+  TF_VAR_vpc_cidr: "10.3.0.0/16"
+  TF_VAR_public_subnets: '{ public-a = { cidr = "10.3.1.0/24", az = "sa-east-1a" } }'
 
 jobs:
   build-and-push:
